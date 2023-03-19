@@ -1,14 +1,12 @@
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState, useEffect, FC } from 'react'
 
 type DropdownProps = {
   title: string
-  items: {
-    label: string
-  }[]
+  items: { label: string }[]
   onSelect: (selected: string) => void
 }
 
-export default function Dropdown(props: DropdownProps) {
+const Dropdown: FC<DropdownProps> = ({ title, items, onSelect }) => {
   const dropdownRef = useRef<HTMLDivElement>(null)
   const [isActive, setIsActive] = useState(false)
 
@@ -21,16 +19,17 @@ export default function Dropdown(props: DropdownProps) {
         setIsActive(false)
       }
     }
+
     document.addEventListener('mousedown', handleClick)
     return () => {
       document.removeEventListener('mousedown', handleClick)
     }
   }, [dropdownRef])
 
-  const toggleDropdown = () => setIsActive(!isActive)
+  const toggleDropdown = () => setIsActive((prev) => !prev)
 
   const handleItemClick = (item: { label: string }) => {
-    props.onSelect(item.label)
+    onSelect(item.label)
     setIsActive(false)
   }
 
@@ -43,7 +42,7 @@ export default function Dropdown(props: DropdownProps) {
         type='button'
         onClick={toggleDropdown}
       >
-        {props.title}
+        {title}
       </button>
 
       <div
@@ -57,7 +56,7 @@ export default function Dropdown(props: DropdownProps) {
           className='py-2 text-sm text-gray-700 dark:text-gray-200'
           aria-labelledby='dropdownDefaultButton'
         >
-          {props.items.map((item, index) => (
+          {items.map((item, index) => (
             <li key={index}>
               <button
                 className='block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'
@@ -72,3 +71,5 @@ export default function Dropdown(props: DropdownProps) {
     </div>
   )
 }
+
+export default Dropdown
