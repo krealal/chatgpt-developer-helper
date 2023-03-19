@@ -5,6 +5,7 @@ type DropdownProps = {
   items: {
     label: string
   }[]
+  onSelect: (selected: string) => void
 }
 
 export default function Dropdown(props: DropdownProps) {
@@ -27,6 +28,11 @@ export default function Dropdown(props: DropdownProps) {
   }, [dropdownRef])
 
   const toggleDropdown = () => setIsActive(!isActive)
+
+  const handleItemClick = (item: { label: string }) => {
+    props.onSelect(item.label)
+    setIsActive(false)
+  }
 
   return (
     <div>
@@ -53,12 +59,12 @@ export default function Dropdown(props: DropdownProps) {
         >
           {props.items.map((item, index) => (
             <li key={index}>
-              <a
-                href={item.href}
-                className='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'
+              <button
+                className='block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'
+                onClick={() => handleItemClick(item)}
               >
                 {item.label}
-              </a>
+              </button>
             </li>
           ))}
         </ul>
