@@ -1,4 +1,26 @@
+import { useRef, useState, useEffect } from 'react'
+
 export default function Dropdown() {
+  const dropdownRef = useRef<HTMLDivElement>(null)
+  const [isActive, setIsActive] = useState(false)
+
+  useEffect(() => {
+    const handleClick = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsActive(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClick)
+    return () => {
+      document.removeEventListener('mousedown', handleClick)
+    }
+  }, [dropdownRef])
+
+  const toggleDropdown = () => setIsActive(!isActive)
+
   return (
     <div>
       <button
@@ -6,28 +28,17 @@ export default function Dropdown() {
         data-dropdown-toggle='dropdown'
         className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
         type='button'
+        onClick={toggleDropdown}
       >
-        Dropdown button{' '}
-        <svg
-          className='w-4 h-4 ml-2'
-          aria-hidden='true'
-          fill='none'
-          stroke='currentColor'
-          viewBox='0 0 24 24'
-          xmlns='http://www.w3.org/2000/svg'
-        >
-          <path
-            stroke-linecap='round'
-            stroke-linejoin='round'
-            stroke-width='2'
-            d='M19 9l-7 7-7-7'
-          />
-        </svg>
+        Dropdown button
       </button>
 
       <div
         id='dropdown'
-        className='z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700'
+        ref={dropdownRef}
+        className={`z-10 ${
+          isActive ? '' : 'hidden'
+        } bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700`}
       >
         <ul
           className='py-2 text-sm text-gray-700 dark:text-gray-200'
@@ -35,7 +46,7 @@ export default function Dropdown() {
         >
           <li>
             <a
-              href='#'
+              href='http://localhost:3000'
               className='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'
             >
               Dashboard
@@ -43,7 +54,7 @@ export default function Dropdown() {
           </li>
           <li>
             <a
-              href='#'
+              href='http://localhost:3000'
               className='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'
             >
               Settings
@@ -51,7 +62,7 @@ export default function Dropdown() {
           </li>
           <li>
             <a
-              href='#'
+              href='http://localhost:3000'
               className='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'
             >
               Earnings
@@ -59,7 +70,7 @@ export default function Dropdown() {
           </li>
           <li>
             <a
-              href='#'
+              href='http://localhost:3000'
               className='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'
             >
               Sign out
