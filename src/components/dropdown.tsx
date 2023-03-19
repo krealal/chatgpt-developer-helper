@@ -1,6 +1,13 @@
 import { useRef, useState, useEffect } from 'react'
 
-export default function Dropdown() {
+type DropdownProps = {
+  title: string
+  items: {
+    label: string
+  }[]
+}
+
+export default function Dropdown(props: DropdownProps) {
   const dropdownRef = useRef<HTMLDivElement>(null)
   const [isActive, setIsActive] = useState(false)
 
@@ -30,7 +37,7 @@ export default function Dropdown() {
         type='button'
         onClick={toggleDropdown}
       >
-        Dropdown button
+        {props.title}
       </button>
 
       <div
@@ -44,38 +51,16 @@ export default function Dropdown() {
           className='py-2 text-sm text-gray-700 dark:text-gray-200'
           aria-labelledby='dropdownDefaultButton'
         >
-          <li>
-            <a
-              href='http://localhost:3000'
-              className='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'
-            >
-              Dashboard
-            </a>
-          </li>
-          <li>
-            <a
-              href='http://localhost:3000'
-              className='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'
-            >
-              Settings
-            </a>
-          </li>
-          <li>
-            <a
-              href='http://localhost:3000'
-              className='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'
-            >
-              Earnings
-            </a>
-          </li>
-          <li>
-            <a
-              href='http://localhost:3000'
-              className='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'
-            >
-              Sign out
-            </a>
-          </li>
+          {props.items.map((item, index) => (
+            <li key={index}>
+              <a
+                href={item.href}
+                className='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'
+              >
+                {item.label}
+              </a>
+            </li>
+          ))}
         </ul>
       </div>
     </div>
